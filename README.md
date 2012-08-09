@@ -5,6 +5,14 @@ An AIR application to pack animation frames from a directory into a PNG 'pixie s
 
 To use:
 
+Step Install.
+  Do you have AIR and Flash Installed? Go get those then come back....
+  Now:
+    Inside the contents of this repo is a folder labelled 'air'
+    Inside the 'air' directory, there is a file named 'pixie.air', run this file to install pixie packer air.
+    You now have pixie packer installed!
+  
+
 Step 1.
   Place all frames of animation into one folder (PNG ONLY).
   Name frames in such a way that alphabetical order is animation order; ie. 0.png, 1.png, 2.png, 90.png, 100.png etc.
