@@ -1,9 +1,12 @@
 package 
 {
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.Loader;
+	import flash.display.SimpleButton;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
 	import flash.net.FileFilter;
@@ -35,6 +38,10 @@ package
 		private static var ui_workingDirectoryTopLabel:TextField;
 		private static var ui_FilesFoundInDirectoryCountLabel:TextField;
 		private static var ui_headerInfoLabel:TextField;
+		
+		private static var ui_select_folderButton:SimpleButton;
+		private static var ui_createButton:SimpleButton;
+		
 		
 		public static function GetAlphabeticalOrder(a:String, b:String):int
 		{
@@ -81,8 +88,6 @@ package
 			stage.nativeWindow.height = 320;
 
 			buildUI();
-			
-			browseForNewWorkingDirectory();
 		}
 		
 		private function buildUI():void
@@ -96,6 +101,7 @@ package
 			ui_pixieLabel 		   = new TextField();
 			ui_pixieLabel.autoSize = "left";
 			ui_pixieLabel.htmlText = "<font size='64' color='#AAAAEE'>Pixie</font>";
+			ui_pixieLabel.selectable = false;
 			addChild(ui_pixieLabel);
 			
 			// Make working directory label
@@ -119,6 +125,18 @@ package
 			ui_headerInfoLabel.htmlText  = "";
 			addChild(ui_headerInfoLabel);
 			
+			// Make selecct folder button
+			ui_select_folderButton = new SimpleButton(new res_btn_select_folder_upState(), new res_btn_select_folder_overState(), new res_btn_select_folder_downState(), new res_btn_select_folder_upState());
+			ui_select_folderButton.useHandCursor = true;
+			ui_select_folderButton.addEventListener(MouseEvent.CLICK, Click_Select_Folder);
+			addChild(ui_select_folderButton);
+			
+			// Make create button
+			ui_createButton = new SimpleButton(new res_btn_create_upState() , new res_btn_create_overState(), new res_btn_create_downState(), new res_btn_create_upState());
+			ui_createButton.useHandCursor = true;
+			ui_createButton.addEventListener(MouseEvent.CLICK, Click_Create);
+			addChild(ui_createButton);
+			
 			// Layout
 			layout();
 		}
@@ -135,6 +153,24 @@ package
 			
 			ui_headerInfoLabel.x 		 		  = ui_FilesFoundInDirectoryCountLabel.x;
 			ui_headerInfoLabel.y 		 		  = ui_FilesFoundInDirectoryCountLabel.y + ui_FilesFoundInDirectoryCountLabel.height;
+			
+			ui_select_folderButton.x 			  = ui_pixieLabel.x + ui_pixieLabel.width;
+			ui_select_folderButton.y 			  = ui_pixieLabel.y;
+			
+			ui_createButton.x  					  = ui_select_folderButton.x + ui_select_folderButton.width;
+			ui_createButton.y 					  = ui_select_folderButton.y;
+		}
+		
+		private function Click_Select_Folder(e:MouseEvent):void
+		{
+			browseForNewWorkingDirectory();
+		}
+		private function Click_Create(e:MouseEvent):void
+		{
+			if (workingDirectoryTop != null && workingDirectoryTop.exists && workingDirectoryTop.isDirectory)
+			{
+				BuildPixieSheet();
+			}
 		}
 		
 		private function browseForNewWorkingDirectory():void
@@ -293,8 +329,14 @@ package
 		
 		private function AllFilesInOrder():void
 		{
+			// Fix layout
+			layout();
+		}
+		
+		private function BuildPixieSheet():void
+		{
 			// Build a new pixie sheet!
-			var sheet:PixieSheet = new PixieSheet(workingBitmaps)
+			var sheet:PixieSheet = new PixieSheet(workingBitmaps, workingDirectoryTop.name)
 			
 			// Creating a sheet prompts to save, the user will have already saved reaching this point
 			
@@ -306,9 +348,6 @@ package
 										  "<font size='16' color='#EEEEEE'>  Columns of Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountAcross +" columns<br></font>" +
 										  "<font size='16' color='#EEEEEE'>  Rows of Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountDown +" rows</font>";
 		
-			// Fix layout
-			layout();
-			
 		}
 	}
 	

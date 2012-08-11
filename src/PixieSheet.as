@@ -17,7 +17,7 @@ package
 	{
 		public var header:Header;
 		
-		public function PixieSheet(AllFramesForSheet:Array) 
+		public function PixieSheet(AllFramesForSheet:Array, OutputNameSeed:String) 
 		{
 			// Validate Frames Given
 			Validation_Frames(AllFramesForSheet);
@@ -69,7 +69,7 @@ package
 			
 			// Get user to choose a file
 			var fileref:FileReference = new FileReference();
-			fileref.save(png, "outputSheet.png");
+			fileref.save(png, OutputNameSeed + ".png");
 			
 		}
 		private function Validation_Frames(AllFramesForSheet:Array):void
