@@ -28,12 +28,15 @@ package
 			var info_FrameCountTotal:int  = AllFramesForSheet.length;														// The total amount of frames in the sheet
 			var info_FrameCountAcross:int = int(Math.floor(Math.sqrt(Number(info_FrameCountTotal))));						// The total amount of columns in the sheet
 			var info_FrameCountDown:int   = int(Math.ceil(Number(info_FrameCountTotal) / Number(info_FrameCountAcross)));	// The total amount of rows in the sheet
+			var info_FrameTickTo:int      = 10;
 			
 			// Create header
-			header = new Header(info_FrameWidth, info_FrameHeight, info_FrameCountTotal, info_FrameCountAcross, info_FrameCountDown);
+			header = new Header(info_FrameWidth, info_FrameHeight, info_FrameCountTotal, info_FrameCountAcross, info_FrameCountDown, info_FrameTickTo);
 			
-			// Setup bitmap data large enough to hold all frames
-			super(new BitmapData(1 + (info_FrameWidth * info_FrameCountAcross), (info_FrameHeight * info_FrameCountDown), true, 0xFF0000));
+			// Setup bitmap data large enough to hold all frames AND the header
+			// 1 + is for the header x
+			// 6 ints are packed we need 6 rows
+			super(new BitmapData(1 + (info_FrameWidth * info_FrameCountAcross), (6 > (info_FrameHeight * info_FrameCountDown) ? 6 : (info_FrameHeight * info_FrameCountDown)), true, 0xFF0000));
 			
 			// Place header bitmap into final sheet
 			var headerBMP:Bitmap = header.GetHeaderBitmap();

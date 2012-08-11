@@ -13,20 +13,22 @@ package
 		public var info_FrameCountTotal:int;	// The total amount of frames in the sheet
 		public var info_FrameCountAcross:int;	// The total amount of columns in the sheet
 		public var info_FrameCountDown:int;		// The total amount of rows in the sheet
+		public var info_FrameTickTo:int;		// The amount of update calls before the animation progresses to the next frame (animation speed, lower = faster)
 			
-		public function Header(FrameWidth:int, FrameHeight:int, FrameCountTotal:int, FrameCountAcross:int, FrameCountDown:int) 
+		public function Header(FrameWidth:int, FrameHeight:int, FrameCountTotal:int, FrameCountAcross:int, FrameCountDown:int, FrameTickTo:int) 
 		{
 			info_FrameWidth 	  = FrameWidth;
 			info_FrameHeight 	  = FrameHeight;
 			info_FrameCountTotal  = FrameCountTotal;
 			info_FrameCountAcross = FrameCountAcross;
 			info_FrameCountDown   = FrameCountDown;
+			info_FrameTickTo      = FrameTickTo;
 		}
 		
 		public function GetHeaderBitmap():Bitmap
 		{
 			// Create bitmap for header
-			var headerBitmapData:BitmapData = new BitmapData(1, 5, true, 0xFFFFFFFF);
+			var headerBitmapData:BitmapData = new BitmapData(1, 6, true, 0xFFFFFFFF);
 			
 			// Pack data into header
 			PackInt(info_FrameWidth, 	   headerBitmapData, 0, 0);
@@ -34,7 +36,7 @@ package
 			PackInt(info_FrameCountTotal,  headerBitmapData, 0, 2);
 			PackInt(info_FrameCountAcross, headerBitmapData, 0, 3);
 			PackInt(info_FrameCountDown,   headerBitmapData, 0, 4);
-			
+			PackInt(info_FrameTickTo,      headerBitmapData, 0, 5);
 			
 			// Return header bitmap
 			return new Bitmap(headerBitmapData);
