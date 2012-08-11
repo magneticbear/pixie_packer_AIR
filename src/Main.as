@@ -38,10 +38,10 @@ package
 		private static var ui_workingDirectoryTopLabel:TextField;
 		private static var ui_FilesFoundInDirectoryCountLabel:TextField;
 		private static var ui_headerInfoLabel:TextField;
-		
 		private static var ui_select_folderButton:SimpleButton;
 		private static var ui_createButton:SimpleButton;
-		
+		private static var ui_tickToLabel:TextField;
+		private static var ui_tickToTextField:TextField;
 		
 		public static function GetAlphabeticalOrder(a:String, b:String):int
 		{
@@ -85,7 +85,7 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.nativeWindow.width = 600;
-			stage.nativeWindow.height = 320;
+			stage.nativeWindow.height = 340;
 
 			buildUI();
 		}
@@ -137,6 +137,25 @@ package
 			ui_createButton.addEventListener(MouseEvent.CLICK, Click_Create);
 			addChild(ui_createButton);
 			
+			// Make tick to label
+			ui_tickToLabel = new TextField();
+			ui_tickToLabel.autoSize = "right";
+			ui_tickToLabel.text = "Animation Latency: ";
+			ui_tickToLabel.textColor = 0xEEEEEE;
+			ui_tickToLabel.selectable = false;
+			addChild(ui_tickToLabel);
+			
+			// Make tick to textfield
+			ui_tickToTextField = new TextField();
+			ui_tickToTextField.autoSize = "center";
+			ui_tickToTextField.text = "10";
+			ui_tickToTextField.border = true;
+			ui_tickToTextField.backgroundColor = 0xEEEEEE;
+			ui_tickToTextField.background = true;
+			ui_tickToTextField.restrict = "0123456789";
+			ui_tickToTextField.type = "input";
+			addChild(ui_tickToTextField);
+			
 			// Layout
 			layout();
 		}
@@ -144,10 +163,16 @@ package
 		{
 			ui_pixieLabel.x 	   				  = 16;
 			ui_pixieLabel.y 	   				  = 16;
+
+			ui_tickToLabel.x 					  = ui_pixieLabel.x;
+			ui_tickToLabel.y 					  = ui_pixieLabel.y + ui_pixieLabel.height;
 			
-			ui_workingDirectoryTopLabel.x 	      = ui_pixieLabel.x;
-			ui_workingDirectoryTopLabel.y 		  = ui_pixieLabel.y + ui_pixieLabel.height;
-						
+			ui_tickToTextField.x 				  = ui_tickToLabel.x + ui_tickToLabel.width;
+			ui_tickToTextField.y 				  = ui_tickToLabel.y;
+			
+			ui_workingDirectoryTopLabel.x 	      = ui_tickToLabel.x;
+			ui_workingDirectoryTopLabel.y 		  = ui_tickToLabel.y + ui_tickToLabel.height;
+			
 			ui_FilesFoundInDirectoryCountLabel.x  = ui_workingDirectoryTopLabel.x;
 			ui_FilesFoundInDirectoryCountLabel.y  = ui_workingDirectoryTopLabel.y + ui_workingDirectoryTopLabel.height;
 			
@@ -336,7 +361,7 @@ package
 		private function BuildPixieSheet():void
 		{
 			// Build a new pixie sheet!
-			var sheet:PixieSheet = new PixieSheet(workingBitmaps, workingDirectoryTop.name)
+			var sheet:PixieSheet = new PixieSheet(workingBitmaps, int(ui_tickToTextField.text), workingDirectoryTop.name)
 			
 			// Creating a sheet prompts to save, the user will have already saved reaching this point
 			
@@ -346,7 +371,8 @@ package
 										  "<font size='16' color='#EEEEEE'>  Frame Height: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameHeight +" px<br></font>" +
 										  "<font size='16' color='#EEEEEE'>  Total Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountTotal +" frames<br></font>" +
 										  "<font size='16' color='#EEEEEE'>  Columns of Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountAcross +" columns<br></font>" +
-										  "<font size='16' color='#EEEEEE'>  Rows of Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountDown +" rows</font>";
+										  "<font size='16' color='#EEEEEE'>  Rows of Frames: </font><font size='16' color='#EEAAAA'>" + sheet.header.info_FrameCountDown +" rows<br></font>" +
+										  "<font size='16' color='#EEEEEE'>  Tick To (Latency): </font><font size='16' color='#EEAAAA'> wait " + sheet.header.info_FrameTickTo +" frames, then move to next</font>";
 		
 		}
 	}

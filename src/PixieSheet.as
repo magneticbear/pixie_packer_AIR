@@ -17,7 +17,7 @@ package
 	{
 		public var header:Header;
 		
-		public function PixieSheet(AllFramesForSheet:Array, OutputNameSeed:String) 
+		public function PixieSheet(AllFramesForSheet:Array, FrameTickTo:int, OutputNameSeed:String) 
 		{
 			// Validate Frames Given
 			Validation_Frames(AllFramesForSheet);
@@ -28,7 +28,7 @@ package
 			var info_FrameCountTotal:int  = AllFramesForSheet.length;														// The total amount of frames in the sheet
 			var info_FrameCountAcross:int = int(Math.floor(Math.sqrt(Number(info_FrameCountTotal))));						// The total amount of columns in the sheet
 			var info_FrameCountDown:int   = int(Math.ceil(Number(info_FrameCountTotal) / Number(info_FrameCountAcross)));	// The total amount of rows in the sheet
-			var info_FrameTickTo:int      = 10;
+			var info_FrameTickTo:int      = FrameTickTo;
 			
 			// Create header
 			header = new Header(info_FrameWidth, info_FrameHeight, info_FrameCountTotal, info_FrameCountAcross, info_FrameCountDown, info_FrameTickTo);
