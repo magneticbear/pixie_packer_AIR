@@ -68,7 +68,7 @@ package
 			var png:ByteArray = PNGEncoder.encode(bitmapData);
 			
 			// Get user to choose a file
-			var fileref = new FileReference();
+			var fileref:FileReference = new FileReference();
 			fileref.save(png, "outputSheet.png");
 			
 		}
