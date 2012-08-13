@@ -43,7 +43,7 @@ package
 		private static var ui_tickToLabel:TextField;
 		private static var ui_tickToTextField:TextField;
 		
-		public static function GetAlphabeticalOrder(a:String, b:String):int
+		public  static function GetAlphabeticalOrder(a:String, b:String):int
 		{
 			// Returns -1 if a then b
 			// Returns  0 if a  ==  b
@@ -66,18 +66,87 @@ package
 			{
 				num2 = 0;
 			}
-			if (num1 < num2)
+			
+			
+			// Check if both are numbers
+			if (isKeycodeNumber(num1) && isKeycodeNumber(num2))
 			{
-				return -1;
-			} 
-			else if (num1 > num2) 
+				// Both are numbers
+				
+				// Build full numbers by peeking down string
+				var num1_truevalue:int = int(getNumberByPeekingDownString(a, pos));
+				var num2_truevalue:int = int(getNumberByPeekingDownString(b, pos));
+				
+				// Return based on true value of number
+				if (num1_truevalue < num2_truevalue)
+				{
+					return -1;
+				}
+				else if (num1_truevalue > num2_truevalue)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			// Both arent numbers
+			else
 			{
-				return 1;
+				// Evaluate based on key codes alone
+				if (num1 < num2)
+				{
+					return -1;
+				} 
+				else if (num1 > num2) 
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}	
+			}
+		}
+		private static function isKeycodeNumber(KeyCode:uint):Boolean
+		{
+			// These are the char codes as3 provides for numbers 0 to 9
+			var keycode_0:uint = 48;
+			var keycode_9:uint = 57;
+			if (KeyCode >= keycode_0 && KeyCode <= keycode_9)
+			{
+				return true;
 			}
 			else
 			{
-				return 0;
+				return false;
 			}
+		}
+		private static function getNumberByPeekingDownString(TheString:String, StartPos:int):String
+		{
+			// We start from the position given, and iterate until we hit a nonnumber
+			var returnString:String = "";
+			for (var pos:int = StartPos; pos < TheString.length; pos++)
+			{
+				if (isKeycodeNumber(TheString.charCodeAt(pos)))
+				{
+					// This char is a number
+					// Add it to the string
+					returnString = returnString.concat(TheString.charAt(pos));
+					// Move to next
+					continue;
+				}
+				else
+				{
+					// This char is not a number
+					// Return whatever we have!
+					return returnString;
+				}
+			}
+			// Ran out of chars!
+			// Return whatever we have!
+			return returnString;
 		}
 		
 		public function Main():void 
@@ -345,6 +414,8 @@ package
 			// Working bitmaps are in alphabetical order! Trim urls from array
 			for (var iter2:int = 0; iter2 < workingBitmaps.length; iter2++)
 			{
+				//print url
+				trace(workingBitmaps[iter2][0]);
 				workingBitmaps[iter2] = workingBitmaps[iter2][1];
 			}
 			
